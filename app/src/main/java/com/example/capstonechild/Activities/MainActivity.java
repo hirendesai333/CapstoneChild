@@ -4,6 +4,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -55,7 +56,15 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(homeFragment);
 
         addProfileButton = findViewById(R.id.fab);
-        addProfileButton.setOnClickListener(view -> startAnotherActivity(CredentialsActivity.class));
+        addProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("Login", MODE_PRIVATE);
+                preferences.edit().remove("email").apply();
+                preferences.edit().remove("password").apply();
+                startAnotherActivity(CredentialsActivity.class);
+            }
+        });
 
         bottomNavigationView = findViewById(R.id.bottomNavigaitonView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
